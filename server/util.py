@@ -28,6 +28,7 @@ def load_saved_artifacts():
     print("loading saved artifacts...start")
     global  __data_columns
     global __locations
+    global __df
 
     with open("./artifacts/bangaluru_price_predict_model_columns.json", "r") as f:
         __data_columns = json.load(f)['data_columns']
@@ -38,6 +39,13 @@ def load_saved_artifacts():
         with open('./artifacts/bangaluru_price_predict_model.pickle', 'rb') as f:
             __model = pickle.load(f)
     print("loading saved artifacts...done")
+
+    with open('./artifacts/graph_data.pickle', 'rb') as f:
+        __df = pickle.load(f)
+
+def get_graph_data():
+    load_saved_artifacts()
+    return __df
 
 def get_location_names():
     load_saved_artifacts()

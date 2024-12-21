@@ -36,9 +36,22 @@ function getBathValue() {
         location: location.value
     },function(data, status) {
         console.log(data.estimated_price);
-        estPrice.innerHTML = "<h2>" + data.estimated_price.toString() + " Lakh</h2>";
+        estPrice.innerHTML = "<h2>" + data.estimated_price.toString() + " </h2><br>" + data.extra.toString();
         console.log(status);
     });
+
+    var url2 = "http://127.0.0.1:5000/get_graph_data";
+    $.get(url2,function(graphJSON, status) {
+      console.log("got response for get_graph_data request");
+      if(graphJSON) {
+        Plotly.newPlot('graph', JSON.parse(graphJSON).data, JSON.parse(graphJSON).layout); 
+      }
+  });
+  // fetch(url2)
+  // .then(response => response.json())
+  // .then(graphJSON => {
+  //     Plotly.newPlot('graph', JSON.parse(graphJSON).data, JSON.parse(graphJSON).layout);
+  // });
   }
   
   function onPageLoad() {
