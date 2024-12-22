@@ -40,7 +40,9 @@ def load_saved_artifacts():
             __model = pickle.load(f)
     print("loading saved artifacts...done")
 
-    with open('./artifacts/graph_data.pickle', 'rb') as f:
+    # with open('./artifacts/graph_data.pickle', 'rb') as f:
+    #     __df = pickle.load(f)
+    with open('./artifacts/raw_data.pickle', 'rb') as f:
         __df = pickle.load(f)
 
 def get_graph_data():

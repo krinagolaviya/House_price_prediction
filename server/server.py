@@ -24,12 +24,16 @@ def get_location_names():
 #     graphJSON = fig.to_json()
 #     return jsonify(graphJSON).headers.add('Access-Control-Allow-Origin','*')
 
-@app.route('/get_graph_data', methods=['GET'])
+@app.route('/get_graph_data', methods=['POST'])
 def get_graph_data():
     df = util.get_graph_data()
+    bhk = int(request.form['bhk'])
+    filtered_df = df[df['bhk'] == bhk]
+    mean_df = filtered_df.groupby('location')['price'].mean().reset_index()
+    sdf = mean_df.sort_values(by="price")
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=df['location'], y=df['price'], name='Price by Area'))
-    fig.update_layout(title='House Prices by Area', xaxis_title='Area', yaxis_title='Price')
+    fig.add_trace(go.Scatter(x=sdf['location'], y=sdf['price'], name='Price by Area'))
+    fig.update_layout(title='House Prices by Area', xaxis_title='Area', yaxis_title='Price(lakh)')
 
     graphJSON = fig.to_json()
     

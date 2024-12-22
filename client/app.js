@@ -41,7 +41,9 @@ function getBathValue() {
     });
 
     var url2 = "http://127.0.0.1:5000/get_graph_data";
-    $.get(url2,function(graphJSON, status) {
+    $.post(url2,{
+      bhk : bhk
+    },function(graphJSON, status) {
       console.log("got response for get_graph_data request");
       if(graphJSON) {
         Plotly.newPlot('graph', JSON.parse(graphJSON).data, JSON.parse(graphJSON).layout); 
