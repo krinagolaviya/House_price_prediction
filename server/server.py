@@ -17,10 +17,10 @@ def get_location_names():
 @app.route('/get_recommand_data', methods=['POST'])
 def get_recommand_data():
     location = request.form['location']
-    arr = util.get_recommand_data(location)
-    
-    graphJSON = fig.to_json()
-    return jsonify(graphJSON).headers.add('Access-Control-Allow-Origin','*')
+    recommanded_list = util.get_recommanded_data(location)
+    response = jsonify(recommanded_list)
+    response.headers.add('Access-Control-Allow-Origin','*')
+    return response
 
 @app.route('/get_graph_data', methods=['POST'])
 def get_graph_data():

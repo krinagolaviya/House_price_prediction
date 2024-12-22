@@ -1,11 +1,11 @@
 import pickle
 import json
 import numpy as np
-
+import pandas as pd
 __locations = None
 __data_columns = None
 __model = None
-__df = None
+__df = pd.DataFrame()
 __rawdf = None
 __similarity = None
 
@@ -29,7 +29,7 @@ def get_estimated_price(location,sqft,bhk,bath):
 
 def load_saved_artifacts():
     print("loading saved artifacts...start")
-    global  __data_columns
+    global __data_columns
     global __locations
     global __df
     global __rawdf
@@ -43,7 +43,6 @@ def load_saved_artifacts():
     if __model is None:
         with open('./artifacts/bangaluru_price_predict_model.pickle', 'rb') as f:
             __model = pickle.load(f)
-    print("loading saved artifacts...done")
 
     # with open('./artifacts/graph_data.pickle', 'rb') as f:
     #     __df = pickle.load(f)
@@ -53,19 +52,31 @@ def load_saved_artifacts():
     with open('./artifacts/similarity.pickle', 'rb') as f:
         __similarity = pickle.load(f)
     
-    with open('./artifacts/similarity.pickle', 'rb') as f:
-        __similarity = pickle.load(f)
 
-    with open('./artifacts/df.pickle', 'rb') as f:
+    with open('./artifacts/df.pkl', 'rb') as f:
         __df = pickle.load(f)
+    print("loading saved artifacts...done")
     
     
 
 def get_recommanded_data(location):
+    global __df
     load_saved_artifacts()
-    index = __df[__df['title'] == location].index[0]
-    movies_list = sorted(list(enumerate(similarity[movie_index])),reverse=True,key = lambda x : x[1])[1:6]
-    retrun [__df,similarity]
+    location = location.strip().lower()
+    __df['location'] = __df['location'].str.strip().str.lower()
+
+    filtered_df = __df[__df['location'] == location]
+    if filtered_df.empty:
+        return f"Location '{location}' not found in the dataset."
+    # print(__df[__df['location'] == location])
+    # index = __df[__df['location'] == location].index[0]
+    index = filtered_df.index[0]
+    location_list = sorted(list(enumerate(__similarity[index])),reverse=True,key = lambda x : x[1])[1:6]
+    recommanded_location = []
+    for i in location_list:
+        recommanded_location.append(__df.iloc[i[0]].location)
+
+    return recommanded_location
 
 def get_graph_data():
     load_saved_artifacts()
@@ -88,3 +99,4 @@ if __name__ == '__main__':
     print(get_estimated_price('1st Phase JP Nagar', 1000, 2, 2))
     print(get_estimated_price('Kalhalli', 1000, 2, 2)) # other location
     print(get_estimated_price('Ejipura', 1000, 2, 2))  # other location
+    print(__df)

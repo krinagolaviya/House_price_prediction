@@ -55,10 +55,26 @@
 	z-index: 2;
 }
 
-.graph{
-	/* max-width: 1000px; */
+.recommand{
+	margin: 8px auto;
+    max-width: 500px;
+    list-style: none;
+    font-size: 1.3rem;
 }
 
+.ulist{
+	list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    /* width: 76%; */
+}
+.innerdiv{
+	margin-left: 8px;
+	background-color: white;
+	width: 76%;
+	border-radius: 4px;
+}
 h2 {
 	font-size: 18px;
 	margin-bottom: 8px;
