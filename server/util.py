@@ -5,6 +5,9 @@ import numpy as np
 __locations = None
 __data_columns = None
 __model = None
+__df = None
+__rawdf = None
+__similarity = None
 
 def get_estimated_price(location,sqft,bhk,bath):
     load_saved_artifacts()
@@ -29,6 +32,8 @@ def load_saved_artifacts():
     global  __data_columns
     global __locations
     global __df
+    global __rawdf
+    global __similarity
 
     with open("./artifacts/bangaluru_price_predict_model_columns.json", "r") as f:
         __data_columns = json.load(f)['data_columns']
@@ -43,11 +48,28 @@ def load_saved_artifacts():
     # with open('./artifacts/graph_data.pickle', 'rb') as f:
     #     __df = pickle.load(f)
     with open('./artifacts/raw_data.pickle', 'rb') as f:
+        __rawdf = pickle.load(f)
+    
+    with open('./artifacts/similarity.pickle', 'rb') as f:
+        __similarity = pickle.load(f)
+    
+    with open('./artifacts/similarity.pickle', 'rb') as f:
+        __similarity = pickle.load(f)
+
+    with open('./artifacts/df.pickle', 'rb') as f:
         __df = pickle.load(f)
+    
+    
+
+def get_recommanded_data(location):
+    load_saved_artifacts()
+    index = __df[__df['title'] == location].index[0]
+    movies_list = sorted(list(enumerate(similarity[movie_index])),reverse=True,key = lambda x : x[1])[1:6]
+    retrun [__df,similarity]
 
 def get_graph_data():
     load_saved_artifacts()
-    return __df
+    return __rawdf
 
 def get_location_names():
     load_saved_artifacts()

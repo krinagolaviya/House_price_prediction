@@ -14,15 +14,13 @@ def get_location_names():
     response.headers.add('Access-Control-Allow-Origin','*')
     return response
 
-# @app.route('/get_graph_data', methods=['GET'])
-# def get_graph_data():
-#     df = util.get_graph_data()
-#     fig = go.Figure()
-#     fig.add_trace(go.Bar(x=df.iloc[0], y=df.iloc[1], name='Price by Area'))
-#     fig.update_layout(title='House Prices by Area', xaxis_title='Area', yaxis_title='Price')
-
-#     graphJSON = fig.to_json()
-#     return jsonify(graphJSON).headers.add('Access-Control-Allow-Origin','*')
+@app.route('/get_recommand_data', methods=['POST'])
+def get_recommand_data():
+    location = request.form['location']
+    arr = util.get_recommand_data(location)
+    
+    graphJSON = fig.to_json()
+    return jsonify(graphJSON).headers.add('Access-Control-Allow-Origin','*')
 
 @app.route('/get_graph_data', methods=['POST'])
 def get_graph_data():
